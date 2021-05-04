@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { concat, forkJoin, interval, Subject } from 'rxjs';
+import { combineLatest, concat, forkJoin, interval, Subject } from 'rxjs';
 import { from, fromEvent, Observable, of, timer } from 'rxjs';
 import {
   debounceTime,
@@ -16,6 +16,7 @@ import {
   takeUntil,
   takeWhile,
   tap,
+  withLatestFrom,
 } from 'rxjs/operators';
 import { ApiService } from './api.service';
 
@@ -28,7 +29,7 @@ export class AppComponent implements OnInit {
   source1$ = from(['Mardi', 'Mercredi', 'Jeudi', 'Venderdi']);
 
   source2$ = from([
-    { name: "L'incontournable", id: 1 },
+    { name: 'L\'incontournable', id: 1 },
     { name: 'La Caza', id: 2 },
     { name: 'Shushis en folie', id: 3 },
     { name: 'Chez Vincent', id: 4 },
@@ -45,6 +46,7 @@ export class AppComponent implements OnInit {
   /* https://www.learnrxjs.io/learn-rxjs */
 
   ngOnInit(): void {
+
     /* ----------------------------- Transformation ----------------------------- */
 
     // // map permet de manipuler chaque donnée qui arrive dans le flux
@@ -61,14 +63,20 @@ export class AppComponent implements OnInit {
     // const mapToSource$ = this.source3$.pipe(mapTo('You clicked!'));
     // mapToSource$.subscribe(data => console.log(data));
 
-    // switchMap, a chaque emission l'observable interne (le résultat de la fonction) est annulé et un nouveau est souscrit
+    // // switchMap, a chaque emission l'observable interne (le résultat de la fonction) est annulé et un nouveau est souscrit
     // this.source3$.subscribe(() => interval(500).subscribe((data) => console.log(data)));
     // this.source3$.pipe(switchMap(event =>  {return interval(500)})).subscribe(data => console.log(data));
 
-    // // MergeMap à préciser
-    // const mergeMapSource$ = this.source1$.pipe(mergeMap(data1 => { return this.source5$.pipe(map(data2 => { return { what: data1, ...data2 } })) }))
-    // mergeMapSource$.subscribe(console.log);
-    // this.source5$.next({ id: 1 })
+
+    /* ------------------------------- Combination ------------------------------ */
+
+    // // concat renvoie les données d'un observable jusqu'à ce quil soit "complete" puis celles du second etc.
+    // const concatSource$ = concat(this.source1$, this.source2$, this.source4$);
+    // concatSource$.subscribe(console.log);
+
+    // // withLatestFrom renvoie un array avec la valeur de l'observable principal la dernière valeur de l'observable secondaire
+    // const withLatestFrom$ = this.source3$.pipe(withLatestFrom(this.source4$.pipe(pluck('key'))));
+    // withLatestFrom$.subscribe(console.log);
 
 
     /* --------------------------------- Utility -------------------------------- */
@@ -116,12 +124,6 @@ export class AppComponent implements OnInit {
     // });
 
 
-    /* ------------------------------- Combination ------------------------------ */
-
-    // // concat à préciser
-    // const concatSource$ = concat(this.source1$, this.source2$);
-    // concatSource$.subscribe(console.log);
-
     /* ------------------------------ Multicasting ------------------------------ */
 
     // // permet de mutualiser les effets de bord
@@ -137,9 +139,5 @@ export class AppComponent implements OnInit {
     // this.source5$.next({ id: 2 });
     // const secondShareSubscriber = shareReplaySource$.subscribe(data => console.log('Second: ', data));
 
-    // this.apiObs.getPosts().subscribe(data => console.log(data));
-    // this.apiObs.getPosts().subscribe(data => console.log(data));
-    // this.apiObs.getComments().subscribe(data => console.log(data));
-    // this.apiObs.getUsers().subscribe(data => console.log(data))
   }
 }
