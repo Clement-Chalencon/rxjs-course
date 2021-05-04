@@ -20,6 +20,9 @@ import {
 } from 'rxjs/operators';
 import { ApiService } from './api.service';
 
+
+  /* https://www.learnrxjs.io/learn-rxjs */
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -43,11 +46,10 @@ export class AppComponent implements OnInit {
 
   constructor(private apiObs: ApiService) {}
 
-  /* https://www.learnrxjs.io/learn-rxjs */
 
   ngOnInit(): void {
 
-    /* ----------------------------- Transformation ----------------------------- */
+    /* ----------------------------- TRANSFORMATION ----------------------------- */
 
     // // map permet de manipuler chaque donnée qui arrive dans le flux
     // const mapSource$ = this.source1$.pipe(map((name) => name.toUpperCase()));
@@ -68,7 +70,8 @@ export class AppComponent implements OnInit {
     // this.source3$.pipe(switchMap(event =>  {return interval(500)})).subscribe(data => console.log(data));
 
 
-    /* ------------------------------- Combination ------------------------------ */
+
+    /* ------------------------------- COMBINATION ------------------------------ */
 
     // // concat renvoie les données d'un observable jusqu'à ce quil soit "complete" puis celles du second etc.
     // const concatSource$ = concat(this.source1$, this.source2$, this.source4$);
@@ -79,7 +82,8 @@ export class AppComponent implements OnInit {
     // withLatestFrom$.subscribe(console.log);
 
 
-    /* --------------------------------- Utility -------------------------------- */
+
+    /* --------------------------------- UTILITY -------------------------------- */
 
     // // tap permet de provoquer des effets de bords sans modifier la donnée orginale
     // const tapSource$ = this.source1$.pipe(
@@ -88,7 +92,8 @@ export class AppComponent implements OnInit {
     // tapSource$.subscribe(data => console.log(data));
 
 
-    /* -------------------------------- Filtering ------------------------------- */
+
+    /* -------------------------------- FILTERING ------------------------------- */
 
     // // filter émet les valeurs qui passent une condition définie
     // this.source2$.pipe(filter(data => data.id === 1)).subscribe(console.log);
@@ -124,7 +129,8 @@ export class AppComponent implements OnInit {
     // });
 
 
-    /* ------------------------------ Multicasting ------------------------------ */
+
+    /* ------------------------------ MULTICASTING ------------------------------ */
 
     // // permet de mutualiser les effets de bord
     // const shareSource$ = this.source3$.pipe(tap((data) => console.log(data)));
